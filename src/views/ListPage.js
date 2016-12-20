@@ -1,7 +1,8 @@
 import React from 'react'
 import classes from './ListPage.css'
+import { withRouter } 'react-router'
 
-export default class ListPage extends React.Component {
+class ListPage extends React.Component {
   static propTypes = {
     viewer: React.PropTypes.object,
   }
@@ -14,3 +15,4 @@ export default class ListPage extends React.Component {
   }
 }
 
+export default withRouter(ListPage);
