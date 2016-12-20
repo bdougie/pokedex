@@ -24,10 +24,6 @@ class PokemonPage extends React.Component {
     }
   }
 
-  static contextTypes = {
-    router: React.PropTypes.object,
-  }
-
   _isAddNew = () => {
     return !this.props.params.hasOwnProperty('id')
   }
@@ -36,7 +32,7 @@ class PokemonPage extends React.Component {
     Relay.Store.commitUpdate(
       new CreatePokemonMutation({name: this.state.name, url: this.state.url, viewer: this.props.viewer}),
       {
-        onSuccess: () => this.context.router.push('/'),
+        onSuccess: () => this.props.router.push('/'),
         onFailure: (transaction) => console.log(transaction),
       },
     )
@@ -46,7 +42,7 @@ class PokemonPage extends React.Component {
     Relay.Store.commitUpdate(
       new UpdatePokemonMutation({name: this.state.name, url: this.state.url, pokemonId: this.props.viewer.Pokemon.id}),
       {
-        onSuccess: () => this.context.router.push('/'),
+        onSuccess: () => this.props.router.push('/'),
         onFailure: (transaction) => console.log(transaction),
       },
     )
@@ -56,7 +52,7 @@ class PokemonPage extends React.Component {
     Relay.Store.commitUpdate(
       new DeletePokemonMutation({pokemonId: this.props.params.id, viewerId: this.props.viewer.id}),
       {
-        onSuccess: () => this.context.router.push('/'),
+        onSuccess: () => this.props.router.push('/'),
         onFailure: (transaction) => console.log(transaction),
       },
     )
