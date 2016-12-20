@@ -3,8 +3,10 @@ import Relay from 'react-relay'
 import PokemonCard from '../components/PokemonCard'
 import CreatePokemonMutation from '../mutations/CreatePokemonMutation'
 import DeletePokemonMutation from '../mutations/DeletePokemonMutation'
+import UpdatePokemonMutation from '../mutations/UpdatePokemonMutation'
 import deleteIcon from '../assets/delete.svg'
 import classes from './PokemonPage.css'
+import {Link} from 'react-router'
 
 class PokemonPage extends React.Component {
 
@@ -31,6 +33,16 @@ class PokemonPage extends React.Component {
       new CreatePokemonMutation({name: this.state.name, url: this.state.url, viewer: this.props.viewer}),
       {
         onSuccess: () => this.props.router.push('/'),
+        onFailure: (transaction) => console.log(transaction),
+      },
+    )
+  }
+
+  _updatePokemon = () => {
+    Relay.Store.commitUpdate(
+      new UpdatePokemonMutation({name: this.state.name, url: this.state.url, pokemonId: this.props.viewer.Pokemon.id}),
+      {
+        onSuccess: () => this.context.router.push('/'),
         onFailure: (transaction) => console.log(transaction),
       },
     )
@@ -64,15 +76,12 @@ class PokemonPage extends React.Component {
               }
             </div>
             <div className={classes.actionButtonContainer}>
-              <div
-                className={classes.button + ' ' + classes.cancelButton}
-                onClick={() => this.props.router.push('/')}
-              >
+              <Link className={classes.button + ' ' + classes.cancelButton + ' ' + classes.link} to={'/'}>
                 Cancel
-              </div>
+              </Link>
               <div
                 className={classes.button + ' ' + classes.saveButton}
-                onClick={this._addPokemon}
+                onClick={this._isAddNew() ? this._addPokemon : this._updatePokemon}
               >
                 {this._isAddNew() ? 'Add' : 'Save'}
               </div>

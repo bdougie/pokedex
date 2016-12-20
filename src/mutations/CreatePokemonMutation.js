@@ -47,6 +47,16 @@ export default class CreatePokemonMutation extends Relay.Mutation {
   }
 
   getOptimisticResponse () {
-
+    return {
+      edge: {
+        node: {
+          name: this.props.name,
+          url: this.props.url,
+        },
+      },
+      viewer: {
+        id: this.props.viewer.id,
+      },
+    }
   }
 }
